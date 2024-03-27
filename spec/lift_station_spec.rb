@@ -8,8 +8,9 @@ describe LiftStation do
       expect { lift_station.total_tank_volume }.not_to raise_error(NotImplementedError)
     end
 
-    # TODO: write a test validating 'LiftStation#total_tank_volume' returns the correct volume
     it 'returns the correct volume' do
+      # Assuming radius = 5 and height = 10 for example
+      expect(lift_station.total_tank_volume).to be_within(0.001).of(785.398) # Expected value for given dimensions
     end
   end
 
@@ -20,8 +21,10 @@ describe LiftStation do
       expect { lift_station.lead_to_off_volume }.not_to raise_error(NotImplementedError)
     end
 
-    # TODO: write a test validating 'LiftStation#lead_to_off_volume' returns the correct volume
-    it 'returns the correct volume' do
+    # TODO: Write a test for lead_to_off_volume method
+    it 'returns the correct volume between lead float and off float' do
+      expect(lift_station.lead_to_off_volume).to eq(0) # Assuming off_to_floor is equal to lead_to_floor initially
     end
   end
+
 end
