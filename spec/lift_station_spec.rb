@@ -5,7 +5,7 @@ describe LiftStation, type: :model do
 
   describe '#total_tank_volume' do
     it 'is implemented' do
-      expect { lift_station.total_tank_volume }.not_to raise_error(NotImplementedError)
+      expect { lift_station.total_tank_volume }.not_to raise_error
     end
 
     it 'returns the correct volume' do
@@ -15,7 +15,7 @@ describe LiftStation, type: :model do
 
   describe '#lead_to_off_volume' do
     it 'is implemented' do
-      expect { lift_station.lead_to_off_volume }.not_to raise_error(NotImplementedError)
+      expect { lift_station.lead_to_off_volume }.not_to raise_error
     end
 
     it 'returns the correct volume' do
