@@ -9,12 +9,18 @@ class LiftStation < ApplicationRecord
   # TODO: implement method
   # The total volume of the lift stations tank
   def total_tank_volume
-    raise NotImplementedError, 'This method still needs to be implemented.'
+    pi * radius**2 * height
   end
 
   # TODO: implement method
   # The volume of the tank from the height of the off float to the height of the lead float
   def lead_to_off_volume
-    raise NotImplementedError, 'This method still needs to be implemented.'
+    pi * radius**2 * (lead_to_floor - off_to_floor)
+  end
+
+  private
+
+  def pi
+    Math::PI
   end
 end

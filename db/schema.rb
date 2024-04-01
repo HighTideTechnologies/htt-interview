@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_18_212203) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_19_185327) do
+  create_table "lift_station_cycles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "inflow_rate"
+    t.integer "outflow_rate"
+    t.integer "flow_total"
+    t.bigint "lift_station_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lift_station_id"], name: "index_lift_station_cycles_on_lift_station_id"
+  end
+
   create_table "lift_stations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.float "radius"
     t.float "height"
