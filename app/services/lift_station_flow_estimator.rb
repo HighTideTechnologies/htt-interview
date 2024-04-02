@@ -6,7 +6,8 @@
 class LiftStationFlowEstimator
   def initialize(lift_station:)
     @lift_station = lift_station
-    @pump_cycle = lift_station.pump.pump_cycles.where.not(started_at: nil, duration: nil).order(created_at: :desc).first
+    @recent_pump_cycle = lift_station.pump_cycles.last
+    @recent_pump_state = lift_station.pump.pump_states.last
   end
 
   # calculate the values and create a new LiftStationCycle to record
@@ -18,7 +19,9 @@ class LiftStationFlowEstimator
   # may be calculated as: 
   # volume between lead and off floats / time taken to rise from off to lead float
   def inflow_rate
-    @lift_station.lead_to_off_volume / @pump_cycle.duration
+    time_diff = (@recent_pump_cycle.started_at - @recent_pump_state.reported_at).to_i
+    time_taken = time_diff.zero? ? 1 : time_diff
+    @lift_station.lead_to_off_volume / time_taken
   end
 
   # the total amount of liquid pumped out of the tank
@@ -27,13 +30,14 @@ class LiftStationFlowEstimator
   #       while the pump is on
   # use the most recent inflow rate as an estimate
   def flow_total
-    outflow_rate * @pump_cycle.duration
+    @lift_station.lead_to_off_volume + inflow_rate
   end
 
   # represents the rate of liquid pumped out of the tank
   # may be calculated as: 
-  # volume between lead and off floats / time taken to fall from lead to off float
+  # total flow / time taken to fall from lead to off float
   def outflow_rate
-    @pump_cycle.ended? ? 0 : inflow_rate
+    time_taken = @recent_pump_cycle.duration.nil?  ? 1 : @recent_pump_cycle.duration
+    flow_total / time_taken
   end
 end

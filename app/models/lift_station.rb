@@ -5,6 +5,7 @@
 # - an off float (at fixed height in tank)
 class LiftStation < ApplicationRecord
   belongs_to :pump, class_name: 'Pump'
+  has_many :pump_cycles, through: :pump
 
   # TODO: implement method
   # The total volume of the lift stations tank
