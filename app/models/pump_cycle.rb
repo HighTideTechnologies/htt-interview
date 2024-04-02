@@ -13,8 +13,8 @@ class PumpCycle < ApplicationRecord
   end
 
   # datetime that cycle ended
-  def eneded_at
-    started_at + durations.seconds
+  def ended_at
+    started_at + duration.seconds
   end
 
   # create new LiftStationCycle with estimations

@@ -1,31 +1,38 @@
 require 'rails_helper'
 
 describe LiftStationFlowEstimator do
-  describe '#perform' do
-    let(:lift_station) { FactoryBot.create :lift_station, pump: FactoryBot.create(:pump_with_telemetry) }
+  let!(:pump) { FactoryBot.create(:pump_with_telemetry) }
+  let!(:lift_station) { FactoryBot.create :lift_station, pump: }
+  let!(:estimator_instance) { LiftStationFlowEstimator.new(lift_station:) }
+  let!(:recent_pump_cycle) { lift_station.pump_cycles.last }
+  let!(:recent_pump_state) { lift_station.pump.pump_states.last }
 
+  describe '#perform' do
     it 'should not error' do
-      expect { LiftStationFlowEstimator.new(lift_station:).perform }.not_to raise_error
+      expect { estimator_instance.perform }.not_to raise_error
     end
 
     it 'should create a lift station cycle' do
-      expect { LiftStationFlowEstimator.new(lift_station:).perform }.to change { LiftStationCycle.count }.by(1)
+      expect { estimator_instance.perform }.to change { LiftStationCycle.count }.by(1)
     end
   end
 
   describe '#inflow_rate' do
+  let!(:lift_station) { FactoryBot.create :lift_station }
+
     it 'should be implemented' do
-      expect { LiftStationFlowEstimator.new(lift_station:).inflow_rate }.not_to raise_error(NotImplementedError)
+      expect { estimator_instance.inflow_rate }.not_to raise_error(NotImplementedError)
     end
 
     # TODO: write a test validating LiftStationFlowEstimator#inflow_rate returns the correct inflow rate
     it 'should calculate the correct inflow rate' do
+      expect(lift_station.lead_to_off_volume).to be_truthy
     end
   end
 
   describe '#outflow_rate' do
     it 'should be implemented' do
-      expect { LiftStationFlowEstimator.new(lift_station:).outflow_rate }.not_to raise_error(NotImplementedError)
+      expect { estimator_instance.outflow_rate }.not_to raise_error(NotImplementedError)
     end
 
     # TODO: write a test validating LiftStationFlowEstimator#outflow_rate returns the correct outflow rate
@@ -35,7 +42,7 @@ describe LiftStationFlowEstimator do
 
   describe '#flow_total' do
     it 'should be implemented' do
-      expect { LiftStationFlowEstimator.new(lift_station:).flow_total }.not_to raise_error(NotImplementedError)
+      expect { estimator_instance.flow_total }.not_to raise_error(NotImplementedError)
     end
 
     # TODO: write a test validating LiftStationFlowEstimator#flow_total returns the correct flow rate
